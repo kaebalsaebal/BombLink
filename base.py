@@ -1,5 +1,6 @@
 from random import randint
 from collections import deque
+import time,os
 
 class bomb:
     # 심지 0-위 1-오른 2-아래 3-왼 -1-비활성화
@@ -36,8 +37,7 @@ class fire:
         self.setFire(x,y+1)
         
     def clearFire(self):
-        self.setFire()
-        self.y = 0
+        self.setFire(0,0)
 
 class link:
     
@@ -54,7 +54,7 @@ class link:
             x = self.karo+1
         self.fire.setFire(x,y)
     
-        for i in range(self.sero+1):
+        for i in range(self.sero+2):
             for j in range(0,self.karo+2):
                 if j==0 or j==self.karo+1:
                     if i==y and j==x:
@@ -94,6 +94,20 @@ class link:
                     if tosso:
                         board[b][a].setBomb(a,b,-1)
                         pokpa.append([b,a])
+
+        for j in range(1,self.karo+1):
+            top = self.sero
+            for i in range(self.sero-1, 0, -1):
+                if board[i][j].getBomb()[2]!=-1:
+                    temp = board[i][j]
+                    a,b,c = temp.getBomb()
+                    board[i][j].setBomb(i,j,-1)
+                    if board[top][j].getBomb()[2] == -1:
+                        board[top][j].setBomb(a,b,c)
+                    else:
+                        top -= 1
+                        board[top][j].setBomb(a,b,c)
+                
                         
     def playBoard(self):
         x,y = self.fire.getFire()
@@ -104,18 +118,22 @@ class link:
             self.board[y][x]=self.fire
             if x==self.karo+1:
                 if self.board[y][x-1].simji==1:
-                    print('폭파')
+                    #print('폭파')
                     self.destroyBoard(self.board,y,x-1)
             elif x==0:
                 if self.board[y][x+1].simji==3:
-                    print('폭파')
+                    #print('폭파')
                     self.destroyBoard(self.board,y,x+1)
             return True
         return False
                 
     def printBoard(self):
-        for i in range(self.sero+1):
+        for i in range(self.sero+2):
+            if i==1 or i==self.sero+1:
+                print('-'*((self.karo+2)*2+3))
             for j in range(0,self.karo+2):
+                if j==1 or j==self.karo+1:
+                    print('|',end=' ')
                 if j==0 or j==self.karo+1:
                     if (j,i)==self.fire.getFire():
                         print('1',end=' ')
@@ -145,6 +163,8 @@ class game:
     def printGame(self):
         self.link.printBoard()
         while self.link.playBoard():
+            time.sleep(1)
+            os.system('clear')
             self.link.printBoard()
         
 game = game(5,10)
