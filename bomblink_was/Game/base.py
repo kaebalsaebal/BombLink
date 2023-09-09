@@ -17,7 +17,7 @@ class Bomb:
         
     def rotate(self):
         self.simji+=1
-        if self.simji>4:
+        if self.simji>3:
             self.simji = 0
             
 class Fire:
@@ -67,6 +67,9 @@ class Link:
                     else:
                         s = randint(0,3)
                         self.board[i][j].setBomb(j,i,s)
+    
+    def getBoard(self):
+        return self.board
                         
     def destroyBoard(self,board,y,x):
         pokpa = deque([])
@@ -127,7 +130,7 @@ class Link:
             return True
         return False
 
-    '''            
+                
     def printBoard(self):
         for i in range(self.sero+2):
             if i==1 or i==self.sero+1:
@@ -154,7 +157,7 @@ class Link:
                         print('0',end=' ')
             print()
         print()
-    '''
+    
     
     def returnBoard(self):
         temp = [['_' for i in range(self.karo+2)] for j in range(self.sero+2)]
@@ -191,11 +194,13 @@ class Game:
         # self.Link.printBoard()
         print(self.Link.returnBoard())
         return self.Link.returnBoard()
-        '''
+    
+    def demoGame(self):
+        print('시작합니다')
         while self.Link.playBoard():
             time.sleep(1)
             os.system('clear')
-            # self.Link.printBoard()
-            for i in self.Link.returnBoard():
-                print(i)
-        '''
+            self.Link.printBoard()
+            #for i in self.Link.returnBoard():
+            #    print(i)
+        
