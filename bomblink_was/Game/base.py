@@ -35,9 +35,17 @@ class Fire:
     def lowerFire(self):
         x,y = self.getFire()
         self.setFire(x,y+1)
+
+    def initFire(self,karo):
+        x,y = randint(0,1),0
+        if x==1:
+            x = karo+1
+        self.setFire(x,y)
+        return x,y
         
-    def clearFire(self):
+    def clearFire(self,karo):
         self.setFire(0,0)
+        self.initFire(karo)
 
 class Link:
     
@@ -48,11 +56,8 @@ class Link:
     
     def initBoard(self):
         self.board = [[Bomb() for i in range(self.karo+2)] for j in range(self.sero+2)]
-        
-        x,y = randint(0,1),0
-        if x==1:
-            x = self.karo+1
-        self.Fire.setFire(x,y)
+
+        x,y = self.Fire.initFire(self.karo)
     
         for i in range(self.sero+2):
             for j in range(0,self.karo+2):
@@ -128,6 +133,8 @@ class Link:
                     #print('폭파')
                     self.destroyBoard(self.board,y,x+1)
             return True
+        elif y==self.sero+1:
+            self.Fire.clearFire(self.karo)
         return False
 
                 
@@ -191,16 +198,13 @@ class Game:
         self.Link.initBoard()
         
     def printGame(self):
-        # self.Link.printBoard()
         print(self.Link.returnBoard())
         return self.Link.returnBoard()
     
-    def demoGame(self):
-        print('시작합니다')
-        while self.Link.playBoard():
-            time.sleep(1)
-            os.system('clear')
-            self.Link.printBoard()
-            #for i in self.Link.returnBoard():
-            #    print(i)
+    def playGame(self):
+        return self.Link.playBoard()
+    
+    def rotateBomb(self,sero,karo):
+        curBomb = self.Link.getBoard()[sero][karo]
+        return curBomb.rotate()
         

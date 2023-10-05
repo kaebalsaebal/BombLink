@@ -18,17 +18,20 @@ class TestAPI(APIView):
         },status=status.HTTP_200_OK)
     
 class BombAPI(APIView):
-    def get(self,request):
-        global game
-        game.demoGame()
-        return Response(status.HTTP_200_OK)
     def post(self,request):
         global game
         curData = request.data
         sero = int(curData['sero'])
         karo = int(curData['karo'])
-        curBomb = game.Link.getBoard()[sero][karo]
-        curBomb.rotate()
+        game.rotateBomb(sero,karo)
+        return Response(data={
+            "board": game.printGame()
+        }, status=status.HTTP_200_OK)
+    
+class GameAPI(APIView):
+    def get(self,request):
+        global game
+        game.playGame()
         return Response(data={
             "board": game.printGame()
         }, status=status.HTTP_200_OK)

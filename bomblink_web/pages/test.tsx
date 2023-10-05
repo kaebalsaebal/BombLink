@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import Link from 'next/link';
 import React, {useState, useEffect} from 'react';
-import styles from '@/styles/test.css'
+import styles from '@/styles/test.module.css';
 
 export default function Test({ data }) {
 
@@ -66,6 +66,13 @@ export default function Test({ data }) {
     }
   }
 
+  const playGame = function(event) {
+    axios.get('http://127.0.0.1:8000/play').then((response)=>{
+    setBoard(response.data.board);
+    }).catch((error)=>console.log(error));
+
+  }
+
   useEffect(()=>{
     setBoard(board);
   },[board])
@@ -73,7 +80,7 @@ export default function Test({ data }) {
   return (
     <div>
       <h1>This is the Test</h1>
-      <table className='board'>
+      <table className={styles.board}>
         <tbody>
             {board.map((row: Array<string>, idx: number) => (
                 <tr key={idx}>
@@ -88,6 +95,9 @@ export default function Test({ data }) {
             ))}
         </tbody>
       </table>
+      <div>
+        <button onClick={playGame}>시작</button>
+      </div>
     </div>
   );
 }

@@ -1,13 +1,15 @@
 .git
 /bomblink_build
+/bomblink_was/Dockerfile
+**/.venv
+**/__pycache__
 
-/bomblink_was/.venv
-*/__pycache__
+/bomblink_web/Dockerfile
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+**/node_modules
 /.pnp
 .pnp.js
 

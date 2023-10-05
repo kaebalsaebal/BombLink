@@ -20,5 +20,6 @@ from Game.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', TestAPI.as_view()),
-    path('rotate/', BombAPI.as_view())
+    path('rotate/', BombAPI.as_view()),
+    path('play/', GameAPI.as_view())
 ]
